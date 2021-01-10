@@ -1,9 +1,15 @@
 var predictions;
-var smooth = 15
+var smooth = 15;
+var threshold = 50;
 var leftreading = [];
 var rightreading = [];
 var leftavg = [];
 var rightavg = [];
+
+function updateTextInput(val) {
+  document.getElementById('textInput').value = val;
+  threshold = val;
+}
 
 function smoothing(arr, smooth) {
   return arr.slice(arr.length - smooth, arr.length).reduce((prev, curr) => prev + curr) / smooth
@@ -64,7 +70,7 @@ callProcessing = function(){
   }
 
   if (leftreading.length > smooth && rightreading.length > smooth) {
-    if (leftavg.slice(-1)[0]['y'] < 50 && rightavg.slice(-1)[0]['y'] < 50) {
+    if (leftavg.slice(-1)[0]['y'] < threshold && rightavg.slice(-1)[0]['y'] < threshold) {
       beep();
     }
   }
