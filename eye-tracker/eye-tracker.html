@@ -1,0 +1,73 @@
+<head>
+  <title>Drowsy Alarm</title>
+  <!-- Load required packages -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.106.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/scatter-gl@0.0.1/lib/scatter-gl.min.js"></script>
+<style>
+  .canvas-wrapper, #scatter-gl-container {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  #scatter-gl-container {
+    border: solid 1px black;
+    position: relative;
+  }
+
+  /* center the canvas within its wrapper */
+  #scatter-gl-container canvas {
+    transform: translate3d(-50%, -50%, 0);
+    left: 50%;
+    top: 50%;
+    position: absolute;
+  }
+</style>
+<script>
+</script>
+</head>
+<body>
+  <div>
+    <h1 style = "text-align:center;">Drowsy Alert</h1>
+    <h2  style = "text-align:center;">Beep alert if eyes are closed for a set duration</h2>
+  </div>
+  <div id="main">
+    <div class="container">
+      <div class="canvas-wrapper">
+        <canvas id="output"></canvas>
+        <video id="video" playsinline style="
+          -webkit-transform: scaleX(-1);
+          transform: scaleX(-1);
+          visibility: hidden;
+          width: auto;
+          height: auto;
+          ">
+        </video>
+      </div>
+      <div id="scatter-gl-container" style="left: 270px;"></div>
+      <div>
+        <b>Alarm Threshold</b>
+        <input type="range" id="rangeInput" value = 50 min="0" max="100" onchange="updateTextInput(this.value);">
+        <input type="text" id="textInput" value="50" onchange="updateRangeInput(this.value);">
+      </div>
+    </div>
+  </div>
+  <div id="chartContainer" style="height: 370px; width:100%;"></div>
+</body>
+
+<!-- Loading Tensorflow-JS package -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.6.0/dist/tf.js"></script>
+
+<!-- Adds the WEBGL backend to the global backend registry -->
+<script>tf.setBackend('webgl').then(() => console.log('webgl backend registered'));</script>
+
+<!-- Load required Tensorflow-JS packages -->
+<script src="https://unpkg.com/@tensorflow/tfjs-core@2.4.0/dist/tf-core.js"></script>
+<script src="https://unpkg.com/@tensorflow/tfjs-converter@2.4.0/dist/tf-converter.js"></script>
+<script src="https://unpkg.com/@tensorflow/tfjs-backend-webgl@2.4.0/dist/tf-backend-webgl.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script>
+<script src="https://unpkg.com/@tensorflow-models/face-landmarks-detection@0.0.2/dist/face-landmarks-detection.js"></script>
+<script src="stats.js"></script>
+<script src="controller.js"></script>
+<script src="index.js"></script>

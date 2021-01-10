@@ -1,5 +1,5 @@
 var predictions;
-var smooth = 15;
+var smooth = 30;
 var threshold = 50;
 var leftreading = [];
 var rightreading = [];
@@ -11,26 +11,35 @@ function updateTextInput(val) {
   threshold = val;
 }
 
+function updateRangeInput(val) {
+  document.getElementById('rangeInput').value = parseInt(val);;
+  threshold = val;
+}
+
 function smoothing(arr, smooth) {
   return arr.slice(arr.length - smooth, arr.length).reduce((prev, curr) => prev + curr) / smooth
 }
 
 var chart = new CanvasJS.Chart("chartContainer", {
   title: {
-    text: "Distance between eye lids (smoothed)"
+    text: "Smoothed Distance between Lips"
   },
   axisY: {
     minimum: 30,
-    maximum: 90
+    maximum: 500
   },
   data: [{
       type: "line",
-      dataPoints: leftavg
-    },
-    {
-      type: "line",
-      dataPoints: rightavg
-    }]
+      dataPoints: leftavg,
+      showInLegend: true,
+      name: "Left Eye",
+    }],
+  legend: {
+    cursor: "pointer",
+    verticalAlign: "bottom",
+    horizontalAlign: "left",
+    dockInsidePlotArea: true,
+  }
 });
 
 function beep() {
@@ -44,11 +53,11 @@ var xVal = 0;
 callProcessing = function(){
   
   var points = predictions[0]['mesh']
-  lefteye = (distVec(points[385], points[380]) + distVec(points[386], points[374])) / 2
-  righteye = (distVec(points[159], points[145]) + distVec(points[158], points[153])) / 2
+  lefteye = (distVec(points[38], points[86]) + distVec(points[268], points[316])) / 2
+  // righteye = (distVec(points[159], points[145]) + distVec(points[158], points[153])) / 2
   
   leftreading.push(lefteye)
-  rightreading.push(righteye)
+  // rightreading.push(righteye)
   
   if(leftreading.length > smooth) {
     leftavg.push({
@@ -56,21 +65,21 @@ callProcessing = function(){
       y: smoothing(leftreading, smooth)
     })
   }
-  if (rightreading.length > smooth) {
-    rightavg.push({
-      x: xVal,
-      y: smoothing(rightreading, smooth)
-    })
-  }
+  // if (rightreading.length > smooth) {
+  //   rightavg.push({
+  //     x: xVal,
+  //     y: smoothing(rightreading, smooth)
+  //   })
+  // }
   xVal++;
 
-  if (leftreading.length > 4*smooth || rightreading.length > 4*smooth){
+  if (leftreading.length > 4*smooth){
     leftavg.shift();
-    rightavg.shift();
+    // rightavg.shift();
   }
 
-  if (leftreading.length > smooth && rightreading.length > smooth) {
-    if (leftavg.slice(-1)[0]['y'] < threshold && rightavg.slice(-1)[0]['y'] < threshold) {
+  if (leftreading.length > smooth) {
+    if (leftavg.slice(-1)[0]['y'] > threshold) {
       beep();
     }
   }

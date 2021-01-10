@@ -39,10 +39,11 @@
           ">
         </video>
       </div>
-      <div id="scatter-gl-container"></div>
+      <div id="scatter-gl-container" style="left: 270px;"></div>
       <div>
-        <input type="range" name="rangeInput" value = 50 min="0" max="100" onchange="updateTextInput(this.value);">
-        <input type="text" id="textInput" value="50">
+        <b>Alarm Threshold</b>
+        <input type="range" id="rangeInput" value = 100 min="100" max="500" onchange="updateTextInput(this.value);">
+        <input type="text" id="textInput" value="100" onchange="updateRangeInput(this.value);">
       </div>
     </div>
   </div>
