@@ -255,8 +255,8 @@ function setupDatGui() {
     }
 }
 
-async function setupCamera() {
-    video = document.getElementById('video');
+async function setupCamera(id) {
+    video = document.getElementById(id);
 
     const stream = await navigator.mediaDevices.getUserMedia({
         'audio': false,
@@ -292,6 +292,7 @@ async function renderPrediction() {
 
     if (predictions.length > 0) {
 
+        // Placing a DOORWAY to our code for custom logic implementation
         callProcessing(predictions)
         
         predictions.forEach(prediction => {
@@ -392,7 +393,7 @@ async function main() {
     stats.showPanel(0);  // 0: fps, 1: ms, 2: mb, 3+: custom
     document.getElementById('main').appendChild(stats.dom);
 
-    await setupCamera();
+    await setupCamera('video');
     video.play();
     videoWidth = video.videoWidth;
     videoHeight = video.videoHeight;

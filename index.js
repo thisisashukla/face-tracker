@@ -1,29 +1,21 @@
-/**
- * @license
- * Copyright 2020 Google LLC. All Rights Reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * https://www.apache.org/licenses/LICENSE-2.0
- *
- /** */
-
 var predictions;
-
-var dps = []; // dataPoints
 var smooth = 15
 var leftreading = [];
 var rightreading = [];
 var leftavg = [];
 var rightavg = [];
+
+function smoothing(arr, smooth) {
+  return arr.slice(arr.length - smooth, arr.length).reduce((prev, curr) => prev + curr) / smooth
+}
+
 var chart = new CanvasJS.Chart("chartContainer", {
   title: {
-    text: "Dynamic Data"
+    text: "Distance between eye lids (smoothed)"
   },
   axisY: {
     minimum: 30,
-    maximum: 70
+    maximum: 90
   },
   data: [{
       type: "line",
@@ -44,34 +36,34 @@ function beep() {
 var xVal = 0;
 
 callProcessing = function(){
+  
   var points = predictions[0]['mesh']
-  // distVec(points[362], points[363]), 
-  // dis = (distVec(points[398], points[382]) + distVec(points[384], points[381]) + distVec(points[385], points[380]) + distVec(points[386], points[374]) + distVec(points[387], points[373]) + distVec(points[388], points[390]))/6
   lefteye = (distVec(points[385], points[380]) + distVec(points[386], points[374])) / 2
   righteye = (distVec(points[159], points[145]) + distVec(points[158], points[153])) / 2
-  // console.log(dis, dis < 51)
-  // dps.push({
-  //   x: xVal,
-  //   y: dis
-  // });
+  
   leftreading.push(lefteye)
   rightreading.push(righteye)
+  
   if(leftreading.length > smooth) {
     leftavg.push({
       x: xVal,
-      y: leftreading.slice(leftreading.length - smooth, leftreading.length).reduce((prev, curr) => prev + curr) / smooth
+      y: smoothing(leftreading, smooth)
     })
   }
   if (rightreading.length > smooth) {
     rightavg.push({
       x: xVal,
-      y: rightreading.slice(rightreading.length - smooth, rightreading.length).reduce((prev, curr) => prev + curr) / smooth
+      y: smoothing(rightreading, smooth)
     })
   }
   xVal++;
 
+  if (leftreading.length > 4*smooth || rightreading.length > 4*smooth){
+    leftavg.shift();
+    rightavg.shift();
+  }
+
   if (leftreading.length > smooth && rightreading.length > smooth) {
-    // console.log(leftavg.slice(-1)[0]['y'], rightavg.slice(-1)[0]['y'])
     if (leftavg.slice(-1)[0]['y'] < 50 && rightavg.slice(-1)[0]['y'] < 50) {
       beep();
     }

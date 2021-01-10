@@ -1,22 +1,7 @@
-<!-- Copyright 2020 Google LLC. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================-->
-
 <head>
-  <!-- Load three.js -->
+  <title>Drowsy Alarm</title>
+  <!-- Load required packages -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.106.2/build/three.min.js"></script>
-<!-- Load scatter-gl.js -->
 <script src="https://cdn.jsdelivr.net/npm/scatter-gl@0.0.1/lib/scatter-gl.min.js"></script>
 <style>
   .canvas-wrapper, #scatter-gl-container {
@@ -37,6 +22,10 @@ limitations under the License.
     position: absolute;
   }
 </style>
+<script>
+function updateTextInput(val) {
+  document.getElementById('textInput').value = val;
+}</script>
 </head>
 <body>
   <div id="main">
@@ -53,36 +42,30 @@ limitations under the License.
         </video>
       </div>
       <div id="scatter-gl-container"></div>
+      <div>
+        <button name="Show Face Grid" value="grid" type="button">Keypoint Toggle</button>
+        <input type="range" name="rangeInput" value = 50 min="0" max="100" onchange="updateTextInput(this.value);">
+        <input type="text" id="textInput" value="50">
+      </div>
     </div>
   </div>
   <div id="chartContainer" style="height: 370px; width:100%;"></div>
 </body>
+
+<!-- Loading Tensorflow-JS package -->
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.6/dat.gui.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.6.0/dist/tf.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script> -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm"></script> -->
-<!-- Import @tensorflow/tfjs or @tensorflow/tfjs-core -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script> -->
 
-<!-- Adds the WASM backend to the global backend registry -->
-<script>
-  tf.setBackend('webgl').then(() => console.log('webgl backend registered'));
-</script>
+<!-- Adds the WEBGL backend to the global backend registry -->
+<script>tf.setBackend('webgl').then(() => console.log('webgl backend registered'));</script>
+
+<!-- Load required Tensorflow-JS packages -->
 <script src="https://unpkg.com/@tensorflow/tfjs-core@2.4.0/dist/tf-core.js"></script>
 <script src="https://unpkg.com/@tensorflow/tfjs-converter@2.4.0/dist/tf-converter.js"></script>
-
-<!-- You must explicitly require a TF.js backend if you're not using the tfjs union bundle. -->
 <script src="https://unpkg.com/@tensorflow/tfjs-backend-webgl@2.4.0/dist/tf-backend-webgl.js"></script>
-<!-- Alternatively you can use the WASM backend: <script src="https://unpkg.com/@tensorflow/tfjs-backend-wasm@2.4.0/dist/tf-backend-wasm.js"></script> -->
-
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script>
-<!-- Require face-landmarks-detection itself. -->
-<script
-  src="https://unpkg.com/@tensorflow-models/face-landmarks-detection@0.0.2/dist/face-landmarks-detection.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh"></script> -->
+<script src="https://unpkg.com/@tensorflow-models/face-landmarks-detection@0.0.2/dist/face-landmarks-detection.js"></script>
 <script src="stats.js"></script>
-<!-- <script src="triangulation.js"></script> -->
 <script src="controller.js"></script>
 <script src="index.js"></script>
