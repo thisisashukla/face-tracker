@@ -20,6 +20,19 @@ function updateRangeInput(val) {
   threshold = val;
 }
 
+// Function to print prediction on video feed
+function updateCheck(){
+  // Get the checkbox
+  var checkBox = document.getElementById("myCheck");
+  
+  // If the checkbox is checked, display the output text
+  if (checkBox.checked == true) {
+    checkValue = true;
+  } else {
+    checkValue = false;
+  }
+}
+
 // Function to smooth an array by a smoothing amount
 function smoothing(arr, smooth) {
   return arr.slice(arr.length - smooth, arr.length).reduce((prev, curr) => prev + curr) / smooth
