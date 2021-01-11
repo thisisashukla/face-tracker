@@ -176,6 +176,7 @@ const RED = "#FF2C35";
 const BLUE = "#157AB3";
 
 var callProcessing;
+var checkValue = false;
 
 function distVec(v1, v2) {
     var dx = v1[0] - v2[0];
@@ -295,7 +296,8 @@ async function renderPrediction() {
         // Placing a DOORWAY to our code for custom logic implementation
         callProcessing(predictions)
         
-        predictions.forEach(prediction => {
+        if (checkValue){
+            predictions.forEach(prediction => {
             const keypoints = prediction.scaledMesh;
 
             if (state.triangulateMesh) {
@@ -354,6 +356,7 @@ async function renderPrediction() {
                 }
             }
         });
+        }
 
         if (renderPointcloud && state.renderPointcloud && scatterGL != null) {
             const pointsData = predictions.map(prediction => {

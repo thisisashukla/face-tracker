@@ -51,6 +51,10 @@
         <input type="range" id="rangeInput" value = 50 min="0" max="100" onchange="updateTextInput(this.value);">
         <input type="text" id="textInput" value="50" onchange="updateRangeInput(this.value);">
       </div>
+      <div>
+        <b>Show Prediction on Feed</b>
+        <input type="checkbox" id="myCheck" onclick="updateCheck()">
+      </div>
     </div>
   </div>
   <div id="chartContainer" style="height: 370px; width:100%;"></div>
